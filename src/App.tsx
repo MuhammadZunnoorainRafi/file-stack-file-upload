@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 function App() {
   const [showPicker, setShowPicker] = useState(false);
+  const [getImage, setGetImage] = useState('');
   return (
     <div className="flex mt-32 flex-col items-center gap-y-10">
       <h1 className="font-mono text-xl font-bold tracking-wider">
@@ -15,6 +16,10 @@ function App() {
             pickerOptions={{
               accept: ['image/*'],
               onClose: () => setShowPicker(false),
+              onUploadDone: (res) => {
+                setGetImage(res.filesUploaded[0].handle);
+                setShowPicker(false);
+              },
             }}
           />
         </div>
@@ -25,7 +30,18 @@ function App() {
       >
         Upload
       </button>
-      <h1 className="font-bold text-lg">Images:</h1>
+      <div>
+        <h1 className="font-bold mb-3 text-center text-lg">Images:</h1>
+        <div className="flex items-center justify-center gap-4">
+          {getImage && (
+            <img
+              className="h-52 w-52 object-cover rounded-md"
+              src={`https://cdn.filestackcontent.com/${getImage}`}
+              alt="error"
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
